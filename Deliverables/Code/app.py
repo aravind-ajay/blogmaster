@@ -9,20 +9,6 @@ import random
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Configure model generation settings
-generate_config = genai.GenerationConfig(
-    temperature=0.75,
-    top_p=0.95,
-    top_k=64,
-    max_output_tokens=8192
-)
-
-# Initialize Gemini model
-model = genai.GenerativeModel(
-    model_name="models/gemini-1.5-flash",
-    generation_config=generate_config
-)
-
 # Joke-List
 jokes = [
     "Why don't programmers like nature? It has too many bugs.",
@@ -55,31 +41,91 @@ jokes = [
     "Why did the Boolean get dumped? Because it couldn't commit.",
     "Why don't robots have brothers? Because they all share the same motherboard.",
     "Why did the software developer go broke? Because he lost his domain in a bet."
-
 ]
+
+# Function to get tone-specific configuration
+def get_tone_config(tone):
+    """Return model configuration based on selected tone"""
+    tone_configs = {
+        "Informative": {
+            "temperature": 0.3,  # Lower temperature for more factual, consistent content
+            "top_p": 0.8,
+            "top_k": 40,
+            "max_output_tokens": 8192
+        },
+        "Professional": {
+            "temperature": 0.4,  # Balanced for formal but not rigid content
+            "top_p": 0.85,
+            "top_k": 50,
+            "max_output_tokens": 8192
+        },
+        "Friendly": {
+            "temperature": 0.7,  # Higher creativity for conversational tone
+            "top_p": 0.9,
+            "top_k": 60,
+            "max_output_tokens": 8192
+        },
+        "Humorous": {
+            "temperature": 0.9,  # Highest creativity for jokes and fun content
+            "top_p": 0.95,
+            "top_k": 64,
+            "max_output_tokens": 8192
+        }
+    }
+    
+    return genai.GenerationConfig(**tone_configs[tone])
 
 # Joke GET Function for displaying during blog generation
 def get_joke():
     return random.choice(jokes)
 
-# Blog generation function
-def generate_blog(topic: str, keywords: str, tone: str):
+# Enhanced blog generation function with tone-specific prompts and word count
+def generate_blog(topic: str, keywords: str, tone: str, word_count: int):
     try:
         # Display spinner and joke
         st.write("✍ Generating your blog... Please wait!")
         joke = get_joke()
         st.info(f"💡 While you wait, here's a tech joke:\n\n*{joke}*")
 
-        # Create prompt
-        prompt = (
-            f"Write a blog post about '{topic}'.\n"
-            f"Include the following keywords: {keywords}.\n"
-            f"Use a {tone.lower()} tone and make it well-structured and engaging."
+        # Get tone-specific configuration
+        tone_config = get_tone_config(tone)
+        
+        # Initialize model with tone-specific config
+        model = genai.GenerativeModel(
+            model_name="models/gemini-1.5-flash",
+            generation_config=tone_config
         )
 
-        # Start chat and send prompt
+        # Create tone-specific prompts with word count
+        tone_prompts = {
+            "Informative": f"""Write a comprehensive, well-researched blog post about '{topic}' in approximately {word_count} words. 
+                            Focus on providing accurate information, data, and insights. 
+                            Include the following keywords naturally: {keywords}.
+                            Structure the content with clear headings and maintain an educational tone throughout.
+                            Ensure the final output is close to {word_count} words while maintaining quality and completeness.""",
+            
+            "Professional": f"""Create a professional blog post about '{topic}' in approximately {word_count} words, suitable for a business audience.
+                            Use formal language while remaining accessible and engaging.
+                            Incorporate these keywords strategically: {keywords}.
+                            Include industry insights and maintain a polished, authoritative tone.
+                            Target exactly {word_count} words while ensuring comprehensive coverage of the topic.""",
+            
+            "Friendly": f"""Write a warm, conversational blog post about '{topic}' in approximately {word_count} words, as if talking to a friend.
+                            Use a casual, approachable tone with personal touches and relatable examples.
+                            Naturally weave in these keywords: {keywords}.
+                            Make it engaging and easy to read with a welcoming personality.
+                            Aim for {word_count} words while keeping the friendly, conversational flow.""",
+            
+            "Humorous": f"""Create an entertaining and witty blog post about '{topic}' in approximately {word_count} words that makes readers smile.
+                            Use humor, jokes, and playful language while still being informative.
+                            Include these keywords in creative ways: {keywords}.
+                            Balance fun content with useful information, and don't be afraid to be quirky!
+                            Target {word_count} words while maintaining the humor and entertainment value."""
+        }
+
+        # Start chat and send tone-specific prompt
         chat_session = model.start_chat()
-        response = chat_session.send_message(prompt)
+        response = chat_session.send_message(tone_prompts[tone])
 
         st.success("✅ Blog successfully generated!")
         return response.text.strip()
@@ -103,12 +149,26 @@ def main():
         
     # Header Section
     st.markdown("""
-        <h1 style='text-align: center; color: #4A66FF;'>🖋️ BlogMaster: Powered by Gemini Flash</h1>
+        <h1 style='text-align: center; color: #4A66FF;'> BlogMaster: Powered by Gemini Flash</h1>
         <p style='text-align: center; font-size: 18px;'>Create engaging, structured blog posts — with a smile while you wait!</p>
         <hr style="border-top: 1px solid #bbb;">
     """, unsafe_allow_html=True)
 
     st.header("📝 Generate a Blog Post")
+
+    # Show tone configuration info
+    with st.expander("ℹ️ How Tones Affect Generation"):
+        st.markdown("""
+        **Informative**: Lower creativity, more factual and consistent content
+        
+        **Professional**: Balanced approach, formal but engaging
+        
+        **Friendly**: Higher creativity for conversational, warm content
+        
+        **Humorous**: Maximum creativity for entertaining, witty content
+        
+        """)
+
 
     # Input Form
     with st.form("blog_form"):
@@ -118,27 +178,38 @@ def main():
         with col2:
             keywords = st.text_input("🔑 Keywords", placeholder="e.g., AI, edtech, learning")
 
-        tone = st.selectbox("🎛️ Choose Tone", ["Informative", "Friendly", "Professional", "Humorous"])
+        col3, col4 = st.columns(2)
+        with col3:
+            tone = st.selectbox("🎛️ Choose Tone", ["Informative", "Friendly", "Professional", "Humorous"])
+        with col4:
+            word_count = st.slider("📊 Word Count", min_value=300, max_value=2000, value=1000, step=50)
+        
         submitted = st.form_submit_button("🚀 Generate Blog")
 
     if submitted:
         if topic and keywords:
             with st.spinner("💭 Thinking deeply... Generating content..."):
-                blog = generate_blog(topic, keywords, tone)
+                blog = generate_blog(topic, keywords, tone, word_count)
 
             if blog:
-                st.subheader("📃Your Blog Post📜 ")
+                st.subheader(f"📃Your Blog Post ")
                 st.markdown(f"<div style='background-color: #7587eb; padding: 15px; border-radius: 10px;'>{blog}</div>", unsafe_allow_html=True)
+                
+                # Display approximate word count
+                actual_word_count = len(blog.split())
+                st.info(f" Approximate word count: {actual_word_count} words")
             else:
-                st.error("❌😵☠️ Something went wrong while generating the blog.")
+                st.error("!!! Something went wrong while generating the blog.")
         else:
             st.error("🚫 Please enter both a topic and some keywords.")
+
 
     # Footer with fun vibe
     st.markdown("""
         <hr>
         <p style='text-align: center; font-size: 14px; color: gray;'>Made with ❤️ using Gemini Flash</p>
     """, unsafe_allow_html=True)
+
 # Run the app
 if __name__ == "__main__":
     main()
