@@ -9,6 +9,39 @@ import random
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+# Function to get tone-specific configuration
+def get_tone_config(tone):
+    """Return model configuration based on selected tone"""
+    tone_configs = {
+        "Informative": {
+            "temperature": 0.3,  # Lower temperature for more factual, consistent content
+            "top_p": 0.8,
+            "top_k": 40,
+            "max_output_tokens": 8192
+        },
+        "Professional": {
+            "temperature": 0.4,  # Balanced for formal but not rigid content
+            "top_p": 0.85,
+            "top_k": 50,
+            "max_output_tokens": 8192
+        },
+        "Friendly": {
+            "temperature": 0.7,  # Higher creativity for conversational tone
+            "top_p": 0.9,
+            "top_k": 60,
+            "max_output_tokens": 8192
+        },
+        "Humorous": {
+            "temperature": 0.9,  # Highest creativity for jokes and fun content
+            "top_p": 0.95,
+            "top_k": 64,
+            "max_output_tokens": 8192
+        }
+    }
+    
+    return genai.GenerationConfig(**tone_configs[tone])
+
+
 # Joke-List
 jokes = [
     "Why don't programmers like nature? It has too many bugs.",
@@ -43,37 +76,6 @@ jokes = [
     "Why did the software developer go broke? Because he lost his domain in a bet."
 ]
 
-# Function to get tone-specific configuration
-def get_tone_config(tone):
-    """Return model configuration based on selected tone"""
-    tone_configs = {
-        "Informative": {
-            "temperature": 0.3,  # Lower temperature for more factual, consistent content
-            "top_p": 0.8,
-            "top_k": 40,
-            "max_output_tokens": 8192
-        },
-        "Professional": {
-            "temperature": 0.4,  # Balanced for formal but not rigid content
-            "top_p": 0.85,
-            "top_k": 50,
-            "max_output_tokens": 8192
-        },
-        "Friendly": {
-            "temperature": 0.7,  # Higher creativity for conversational tone
-            "top_p": 0.9,
-            "top_k": 60,
-            "max_output_tokens": 8192
-        },
-        "Humorous": {
-            "temperature": 0.9,  # Highest creativity for jokes and fun content
-            "top_p": 0.95,
-            "top_k": 64,
-            "max_output_tokens": 8192
-        }
-    }
-    
-    return genai.GenerationConfig(**tone_configs[tone])
 
 # Joke GET Function for displaying during blog generation
 def get_joke():
