@@ -5,5 +5,5 @@ BlogMaster is a web application that uses Google Gemini 1.5 Flash via Streamlit 
 **Key Capabilities**:
 - Tone based generation
 - Adjustable word count
-- keywird focused generation
+- keyword focused generation
 - Engaging user interface
