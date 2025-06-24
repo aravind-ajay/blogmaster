@@ -76,7 +76,6 @@ jokes = [
     "Why did the software developer go broke? Because he lost his domain in a bet."
 ]
 
-
 # Joke GET Function for displaying during blog generation
 def get_joke():
     return random.choice(jokes)
