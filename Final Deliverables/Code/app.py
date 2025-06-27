@@ -9,7 +9,7 @@ import random
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Function to get tone-specific configuration
+# Function to get tone-specific configuration``
 def get_tone_config(tone):
     """Return model configuration based on selected tone"""
     tone_configs = {
