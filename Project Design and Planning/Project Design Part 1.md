@@ -33,18 +33,6 @@
 - Output displayed below with styled container
 - Footer with credits
 
----
-
-## 4. Feature Prioritization (MVP)
-
-| Priority | Feature                     |
-|----------|-----------------------------|
-| High     | Blog generation via Gemini API |
-| High     | Tone selection               |
-| High     | Word count control           |
-| Medium   | Tech joke while loading      |
-| Medium   | Styled output container      |
-| Low      | Footer & tone explanation    |
 
 ---
 
@@ -58,10 +46,4 @@
 | dotenv              | Manage sensitive API credentials       |
 | GitHub              | Version control and collaboration      |
 
----
 
-## 6. Output of Part 1
-
-- Clear feature and requirement list defined
-- UI flow and MVP functionality decided
-- Ready to begin architectural and component design
