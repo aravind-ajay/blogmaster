@@ -6,13 +6,13 @@
 
 **Model**: Client–API (no database or persistent backend)
 
-User Input
-↓
-Prompt Builder
-↓
-Gemini Flash API
-↓
-Blog Response + Joke Display
+User Input<br>
+↓<br>
+Prompt Builder<br>
+↓<br>
+Gemini Flash API<br>
+↓<br>
+Blog Response + Joke Display<br>
 
 ---
 
