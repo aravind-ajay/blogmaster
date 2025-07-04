@@ -1,3 +1,2 @@
-# Akhil - Task 2: Joke Timing Feature
+Validation, Output Metrics, and GitHub Integration: I handled validation for input fields to prevent empty submissions and added word count feedback after the blog is generated. I also took care of uploading the complete project to GitHub with a proper README and clean structure for clear documentation and submission.
 
-I added a timed **programming joke display** during blog generation. It pops up while content is being processed, giving users something fun to read, breaking monotony, and keeping them engaged during wait times.

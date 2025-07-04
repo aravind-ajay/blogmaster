@@ -1,3 +1,3 @@
-# Satyam - Task 2: Tone Parameter Configuration
+Creating Input Components
+I implemented the form using Streamlit’s interactive widgets like text_input, selectbox, and slider, allowing users to give all necessary information easily.
 
-I fine-tuned parameters like `temperature`, `top_p`, and `top_k` for each tone option in the dropdown. This ensured the generated text aligns better with the tone selected — whether it's humorous or formal — and feels more human.

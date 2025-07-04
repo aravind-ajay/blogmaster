@@ -1,3 +1,3 @@
-# Aravind - Task 3: Modular Code Structure
+Refactoring Code for Maintainability
+After everything was functional, I cleaned up the codebase — moving prompt-building and response logic into functions, removing repetitive code, and improving overall readability.
 
-I broke the logic into separate, clean functions so each part of the app — form handling, generation, jokes, and error handling — stays manageable. This has helped us debug, update, and improve the app much more easily as a team.

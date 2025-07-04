@@ -1,3 +1,3 @@
-# Satyam - Task 3: Error Handling
+Adding Tone-Specific Behavior & Fun Element
+To make the generation feel dynamic, I configured different tone settings (like temperature, top_p) based on user selection. I also added a random tech joke display to entertain the user while the content is generating.
 
-I implemented graceful error handling. If a user enters invalid input or there’s a model/API issue, the app now shows helpful, styled error messages instead of crashing. This protects the user experience and improves overall reliability.

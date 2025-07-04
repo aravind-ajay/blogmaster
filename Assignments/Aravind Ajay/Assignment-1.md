@@ -1,3 +1,3 @@
-# Aravind - Task 1: Prompt Templates
+Designing the Visual Experience
+My first focus was making sure the app looked polished and professional. I sketched out how titles, buttons, and outputs should appear using markdown and spacing.
 
-I created specific **prompt templates** that adapt based on tone. For example, the "Informative" tone uses a structured, fact-based approach while "Funny" uses light, witty phrasing. These templates act as the invisible engine behind the user’s tone selection in the UI.
