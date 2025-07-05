@@ -1,0 +1,2 @@
+Connecting to Gemini API & Adding Error Handling
+After the UI was complete, I integrated the Gemini Flash API. I also added error messages and feedback mechanisms using Streamlit alerts — to handle blank fields, connection errors, or invalid responses.
