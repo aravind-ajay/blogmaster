@@ -1,3 +1,3 @@
-# Satyam - Task 1: Random Joke Display
+Understanding Input Requirements
+I started by identifying what kind of input a blog generator should need — topic, keywords, tone, and length. I planned how to collect these inputs effectively from users in one form.
 
-I added the **random tech joke feature** that appears during blog generation — giving users something to smile about while waiting. This fun element makes the user experience more engaging and was placed cleverly to not interfere with functionality.
