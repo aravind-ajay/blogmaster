@@ -1,0 +1,1 @@
+Designing Input Handling and Blog Flow: I worked on structuring how the blog generation process would function — from taking user input to initiating generation and returning the result. I focused on ensuring a smooth and logical data flow for a better user experience.
